@@ -1,5 +1,6 @@
 package com.william.sprintbootmall.dao.implement;
 
+import com.william.sprintbootmall.constant.queryProductConditions;
 import com.william.sprintbootmall.dao.ProductDao;
 import com.william.sprintbootmall.dto.ProductRequest;
 import com.william.sprintbootmall.model.Product;
@@ -19,6 +20,25 @@ import java.util.*;
 public class ProductDaoImpl implements ProductDao {
     @Autowired
     private NamedParameterJdbcTemplate namedParameterJdbcTemplate;
+
+    @Override
+    public List<Product> getProductlist(queryProductConditions queryProductConditions) {
+        String sql = "SELECT * FROM product WHERE 1 = 1";
+            Map<String,Object> map = new HashMap<>();
+
+        if(queryProductConditions.getProductCategory() != null){
+            sql = sql + " AND category = :category";
+            map.put("category",queryProductConditions.getProductCategory().name());
+        }
+        if(queryProductConditions.getSearchKey() != null){
+            sql = sql + " AND product_name LIKE :searchKey";
+            map.put("searchKey","%" + queryProductConditions.getSearchKey() + "%");
+        }
+
+        List<Product> productList = namedParameterJdbcTemplate.query(sql,map,new ProductRowMapper());
+        return productList;
+    }
+
     @Override
     public Product getProductById(Integer productId) {
 

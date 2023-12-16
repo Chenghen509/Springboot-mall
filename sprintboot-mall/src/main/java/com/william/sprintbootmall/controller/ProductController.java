@@ -1,5 +1,7 @@
 package com.william.sprintbootmall.controller;
 
+import com.william.sprintbootmall.constant.ProductCategory;
+import com.william.sprintbootmall.constant.queryProductConditions;
 import com.william.sprintbootmall.dto.ProductRequest;
 import com.william.sprintbootmall.model.Product;
 import jakarta.validation.Valid;
@@ -8,11 +10,25 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import com.william.sprintbootmall.service.ProductService;
+
+import java.util.List;
+
 @RestController
 public class ProductController {
 
     @Autowired
     private ProductService productService;
+
+    @GetMapping("/products")
+    public ResponseEntity <List<Product>> getProductlist(@RequestParam(required = false)ProductCategory category,
+                                                         @RequestParam(required = false)String searchKey){
+        queryProductConditions queryProductConditions = new queryProductConditions();
+        queryProductConditions.setProductCategory(category);
+        queryProductConditions.setSearchKey(searchKey);
+
+        List<Product> productList = productService.getProductlist(queryProductConditions);
+        return ResponseEntity.status(HttpStatus.OK).body(productList);
+    }
 
     @GetMapping("products/{productId}")
     public ResponseEntity<Product> getProduct(@PathVariable Integer productId){
