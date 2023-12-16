@@ -31,6 +31,23 @@ public class ProductController {
         if(productId > 0)
             return  ResponseEntity.status(HttpStatus.CREATED).body(productService.getProductById(productId));
         else
-            return  ResponseEntity.status(HttpStatus.NOT_ACCEPTABLE).build();
+            return  ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
+    }
+
+    @PutMapping("/products/{productId}")
+    public ResponseEntity<Product> updateProduct(@RequestBody @Valid ProductRequest productRequest,@PathVariable Integer productId){
+
+        Product product =productService.getProductById(productId);
+        if(product == null)
+            return  ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+
+       productService.updateProduct(productRequest,productId);
+       return  ResponseEntity.status(HttpStatus.OK).body(productService.getProductById(productId));
+    }
+
+    @DeleteMapping("/products/{productId}")
+    public ResponseEntity<Product> deleteProductById(@PathVariable Integer productId){
+        productService.deleteProduct(productId);
+        return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
     }
 }
