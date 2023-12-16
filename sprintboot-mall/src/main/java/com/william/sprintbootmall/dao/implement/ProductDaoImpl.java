@@ -28,12 +28,13 @@ public class ProductDaoImpl implements ProductDao {
 
         if(queryProductConditions.getProductCategory() != null){
             sql = sql + " AND category = :category";
-            map.put("category",queryProductConditions.getProductCategory().name());
+            map.put("category",queryProductConditions.getProductCategory().name());//enum類型需要額外轉換字串
         }
         if(queryProductConditions.getSearchKey() != null){
             sql = sql + " AND product_name LIKE :searchKey";
             map.put("searchKey","%" + queryProductConditions.getSearchKey() + "%");
         }
+        sql = sql + " ORDER BY " + queryProductConditions.getOrderBy() + " " + queryProductConditions.getSort();
 
         List<Product> productList = namedParameterJdbcTemplate.query(sql,map,new ProductRowMapper());
         return productList;
