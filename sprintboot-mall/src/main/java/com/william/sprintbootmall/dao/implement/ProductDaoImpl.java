@@ -21,6 +21,23 @@ public class ProductDaoImpl implements ProductDao {
     @Autowired
     private NamedParameterJdbcTemplate namedParameterJdbcTemplate;
 
+
+    @Override
+    public Integer countProduct(queryProductConditions queryProductConditions) {
+        String sql = "SELECT COUNT(*) FROM product WHERE 1=1";
+        Map<String,Object> map = new HashMap<>();
+
+        if(queryProductConditions.getProductCategory() != null){
+            sql = sql + " AND category = :category";
+            map.put("category",queryProductConditions.getProductCategory().name());//enum類型需要額外轉換字串
+        }
+        if(queryProductConditions.getSearchKey() != null){
+            sql = sql + " AND product_name LIKE :searchKey";
+            map.put("searchKey","%" + queryProductConditions.getSearchKey() + "%");
+        }
+        return namedParameterJdbcTemplate.queryForObject(sql,map,Integer.class);
+    }
+
     @Override
     public List<Product> getProductlist(queryProductConditions queryProductConditions) {
         String sql = "SELECT * FROM product WHERE 1 = 1";
@@ -34,7 +51,12 @@ public class ProductDaoImpl implements ProductDao {
             sql = sql + " AND product_name LIKE :searchKey";
             map.put("searchKey","%" + queryProductConditions.getSearchKey() + "%");
         }
+        //排序
         sql = sql + " ORDER BY " + queryProductConditions.getOrderBy() + " " + queryProductConditions.getSort();
+        //分頁
+        sql = sql + " limit :limit "+ " " + "offset :offset";
+        map.put("limit",queryProductConditions.getLimit());
+        map.put("offset",queryProductConditions.getOffset());
 
         List<Product> productList = namedParameterJdbcTemplate.query(sql,map,new ProductRowMapper());
         return productList;
