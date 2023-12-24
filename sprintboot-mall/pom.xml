@@ -9,7 +9,7 @@
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
     <groupId>com.william</groupId>
-    <artifactId>sprintboot-mall</artifactId>
+    <artifactId>springboot-mall</artifactId>
     <version>0.0.1-SNAPSHOT</version>
     <name>sprintboot-mall</name>
     <description>sprintboot-mall</description>
