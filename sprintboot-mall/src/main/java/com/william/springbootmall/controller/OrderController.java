@@ -2,6 +2,7 @@ package com.william.springbootmall.controller;
 
 import com.william.springbootmall.constant.buyItem;
 import com.william.springbootmall.constant.createOrderRequest;
+import com.william.springbootmall.model.Order;
 import com.william.springbootmall.service.OrderService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -23,7 +24,9 @@ public class OrderController {
                                          @RequestBody createOrderRequest createOrderRequest){
         Integer orderId = orderService.createOrder(userId,createOrderRequest);
 
-        return ResponseEntity.status(HttpStatus.OK).body(orderId);
+        Order order = orderService.getOrderById(orderId);
+
+        return ResponseEntity.status(HttpStatus.CREATED).body(order);
 
     }
 }
