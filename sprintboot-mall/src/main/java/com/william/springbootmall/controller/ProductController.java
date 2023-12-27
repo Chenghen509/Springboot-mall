@@ -24,7 +24,7 @@ public class ProductController {
     private ProductService productService;
 
     @GetMapping("/products")
-    public ResponseEntity <page<Product>> getProductlist(@RequestParam(required = false)ProductCategory category,
+    public ResponseEntity <page<Product>> getProducts(@RequestParam(required = false)ProductCategory category,
                                                          @RequestParam(required = false)String searchKey,
                                                          @RequestParam(defaultValue = "created_date")String orderBy,
                                                          @RequestParam(defaultValue = "asc")String sort,
@@ -38,7 +38,7 @@ public class ProductController {
         queryProductConditions.setLimit(limit);
         queryProductConditions.setOffset(offset);
 
-        List<Product> productList = productService.getProductlist(queryProductConditions);
+        List<Product> productList = productService.getProductList(queryProductConditions);
         Integer total = productService.countProduct(queryProductConditions);
 
         page page = new page();

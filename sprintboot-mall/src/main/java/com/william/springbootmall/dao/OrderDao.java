@@ -2,6 +2,7 @@ package com.william.springbootmall.dao;
 
 import com.william.springbootmall.constant.buyItem;
 import com.william.springbootmall.constant.createOrderRequest;
+import com.william.springbootmall.constant.orderQueryParams;
 import com.william.springbootmall.model.Order;
 import com.william.springbootmall.model.OrderItem;
 
@@ -13,4 +14,6 @@ public interface OrderDao {
     void createOrderItems(Integer orderId, List<OrderItem> orderItemList);
     Order getOrderById(Integer orderId);
     List<OrderItem> getOrderItemByOrderId(Integer orderId);
+    Integer countOrder(orderQueryParams orderQueryParams);
+    List<Order> getOrderList(orderQueryParams orderQueryParams);
 }

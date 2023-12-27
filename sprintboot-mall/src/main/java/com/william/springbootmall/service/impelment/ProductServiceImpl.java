@@ -22,8 +22,8 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
-    public List<Product> getProductlist(queryProductConditions queryProductConditions) {
-        return  productDao.getProductlist(queryProductConditions);
+    public List<Product> getProductList(queryProductConditions queryProductConditions) {
+        return  productDao.getProductList(queryProductConditions);
     }
 
     @Override
