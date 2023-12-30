@@ -24,7 +24,7 @@ public class ProductDaoImpl implements ProductDao {
     public Integer countProduct(queryProductConditions queryProductConditions) {
         String sql = "SELECT COUNT(*) FROM product WHERE 1=1";
         Map<String,Object> map = new HashMap<>();
-        addFilteringSql(sql,map,queryProductConditions);
+        sql =  addFilteringSql(sql,map,queryProductConditions);
         return namedParameterJdbcTemplate.queryForObject(sql,map,Integer.class);
     }
 
@@ -32,7 +32,7 @@ public class ProductDaoImpl implements ProductDao {
     public List<Product> getProductList(queryProductConditions queryProductConditions) {
         String sql = "SELECT * FROM product WHERE 1 = 1";
         Map<String,Object> map = new HashMap<>();
-        addFilteringSql(sql,map,queryProductConditions);
+        sql = addFilteringSql(sql,map,queryProductConditions);
 
         //排序
         sql = sql + " ORDER BY " + queryProductConditions.getOrderBy() + " " + queryProductConditions.getSort();

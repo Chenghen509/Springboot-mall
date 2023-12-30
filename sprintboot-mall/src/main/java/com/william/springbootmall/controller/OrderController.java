@@ -3,6 +3,7 @@ package com.william.springbootmall.controller;
 import com.william.springbootmall.constant.*;
 import com.william.springbootmall.model.Order;
 import com.william.springbootmall.service.OrderService;
+import jakarta.validation.Valid;
 import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.Min;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,7 +20,7 @@ public class OrderController {
 
     @PostMapping("/users/{userId}/orders")
     public ResponseEntity<?> createOrder(@PathVariable Integer userId,
-                                         @RequestBody createOrderRequest createOrderRequest){
+                                         @RequestBody @Valid createOrderRequest createOrderRequest){
         Integer orderId = orderService.createOrder(userId,createOrderRequest);
 
         Order order = orderService.getOrderById(orderId);
@@ -48,7 +49,7 @@ public class OrderController {
         page.setLimit(limit);
         page.setOffset(offset);
         page.setTotal(total);
-        page.setResult(orderList);
+        page.setResults(orderList);
         return ResponseEntity.status(HttpStatus.OK).body(page);
     }
 }

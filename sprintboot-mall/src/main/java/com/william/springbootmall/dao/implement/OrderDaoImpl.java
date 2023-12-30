@@ -28,7 +28,7 @@ public class OrderDaoImpl implements OrderDao {
     @Override
     public Integer createOrder(Integer userId, Integer totalAmount) {
         String sql = "INSERT INTO dcp_order(user_id,total_amount,created_date,last_modified_date)" +
-                "VALUE(:userId,:totalAmount,:createdDate,:lastModifiedDate)";
+                "VALUES(:userId,:totalAmount,:createdDate,:lastModifiedDate)";
 
         Map<String,Object> map = new HashMap<>();
         map.put("userId",userId);
@@ -51,7 +51,7 @@ public class OrderDaoImpl implements OrderDao {
     public void createOrderItems(Integer orderId, List<OrderItem> orderItemList) {
         //使用batchUpdate 一次性加入數據，比起用for loop 效率更好
         String sql = "INSERT INTO dcp_order_detail(order_id,product_id,quantity,amount)" +
-                "VALUE(:orderId,:productId,:quantity,:amount)";
+                "VALUES(:orderId,:productId,:quantity,:amount)";
 
         MapSqlParameterSource[] parameterSources = new MapSqlParameterSource[orderItemList.size()];
         for(int i = 0; i < orderItemList.size();i++){
@@ -99,7 +99,7 @@ public class OrderDaoImpl implements OrderDao {
     public Integer countOrder(orderQueryParams orderQueryParams) {
         String sql = "SELECT COUNT(*) FROM dcp_order WHERE 1=1";
         Map<String,Object> map = new HashMap<>();
-        addFilteringSql(sql,map,orderQueryParams);
+        sql = addFilteringSql(sql,map,orderQueryParams);
         return namedParameterJdbcTemplate.queryForObject(sql,map,Integer.class);
     }
 
@@ -108,7 +108,7 @@ public class OrderDaoImpl implements OrderDao {
         String sql = "SELECT * FROM dcp_order where 1 = 1";
 
         Map<String,Object> map = new HashMap<>();
-        addFilteringSql(sql,map,orderQueryParams);
+        sql = addFilteringSql(sql,map,orderQueryParams);
 
         //排序
         sql = sql + " ORDER BY created_date DESC ";
